@@ -5,9 +5,9 @@ block_cipher = None
 
 
 a = Analysis(['SerialPlotting.py'],
-             pathex=['C:\\Users\\scott\\OneDrive\\Documents\\Python_Scripts\\Dye_Densitometer_GUI\\v1_2_0'],
+             pathex=['C:\\Users\\scott\\OneDrive\\Documents\\Python_Scripts\\Dye_Densitometer_GUI\\v1_2_1'],
              binaries=[],
-             datas=[('AIF_Processing\\hemoglobin.dat', '.'), ('AIF_Processing\\icg.dat', '.'), ('AIF_Processing\\newwater.dat', '.')],
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              hooksconfig={},
