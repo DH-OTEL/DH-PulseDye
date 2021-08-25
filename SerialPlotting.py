@@ -470,7 +470,7 @@ class SerialPlotting:
         # print("ICG")
         o = o_loadAIF()
         o.save_AIF_file(GUI_Vars(
-            self.root, self.fig, self.canvas, self.folderName, self.msg, self.current_dir))  # self.root)
+            self.root, self.fig, self.canvas, self.folderName, self.msg, self.current_dir, self.SaO2, self.HbO2))  # self.root)
 
     def start_GUI(self):
         print(self.current_dir)

@@ -6,6 +6,7 @@ Created on Wed Dec 23 22:59:55 2020
 @author: thomasusherwood
 """
 
+from GUI_Vars import GUI_Vars
 import numpy as np
 from pandas import read_csv
 from scipy import interpolate, signal
@@ -55,10 +56,18 @@ class TI_to_AIF:
         fid = open(self.filename, "r")
         X1 = np.loadtxt(fid, skiprows=6, delimiter=',')
         fid.close()
-        SaO2 = 0.98
-        tHb = 14
+        if self.gui_vars.SaO2 != 0:
+            SaO2 = self.gui_vars.SaO2
+        else:
+            SaO2 = 0.98
+        if self.gui_vars.tHb != 0:
+            tHb = self.gui_vars.tHb
+        else:
+            tHb = 14
 
-        fs = 500  # sampling rate
+        print("Sa02 = ", SaO2, ", tHb = ", tHb)
+
+        fs = 300  # sampling rate
         tbl = [10, 60]  # reliable baseline data
 
         # red and ir channels (raw)
