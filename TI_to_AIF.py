@@ -349,7 +349,7 @@ class TI_to_AIF:
 
                 # If 2 points have been chosen
                 if len(self.x1) == 2:
-                    # time.sleep(2)
+                    time.sleep(1)
 
                     # Stop collecting data from this instance of mpl_connect
                     self.collect_x1 = False
