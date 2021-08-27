@@ -67,6 +67,13 @@ class TI_to_AIF:
 
         print("Sa02 = ", SaO2, ", tHb = ", tHb)
 
+        # Calculate sampling Rate
+        sdps = []  # list for number of data points for each second
+        for i == len(X1):
+            sdps[i] = X1[i, 6]
+            sdps[i] = X1.groupby(['Timestamp'])[['name']].count()
+            print("sdps = ", sdps[i])
+
         fs = 300  # sampling rate
         tbl = [10, 60]  # reliable baseline data
 
