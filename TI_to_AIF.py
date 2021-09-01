@@ -70,7 +70,7 @@ class TI_to_AIF:
         print("Sa02 = ", SaO2, ", tHb = ", tHb)
 
         # Calculate sampling Rate
-        len_X1 = len(X1[:, 5])
+        len_X1 = len(X1[:, 6])
         tint = [None] * len_X1  # list for int values for timestamps
         sdps = []  # list for number of data points for each second
 

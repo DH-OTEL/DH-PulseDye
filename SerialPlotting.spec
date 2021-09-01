@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['SerialPlotting.py'],
-             pathex=['C:\\Users\\scott\\OneDrive\\Documents\\Python_Scripts\\Dye_Densitometer_GUI\\v1_2_1'],
+             pathex=['C:\\Users\\scott\\OneDrive\\Documents\\Python_Scripts\\Dye_Densitometer_GUI\\v1_2_2'],
              binaries=[],
              datas=[],
              hiddenimports=[],
