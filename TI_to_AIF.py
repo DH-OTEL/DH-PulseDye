@@ -21,6 +21,8 @@ import time
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from AIF_Saving import AIF_Saving
+from collections import Counter
+import statistics
 
 
 class TI_to_AIF:
@@ -68,13 +70,30 @@ class TI_to_AIF:
         print("Sa02 = ", SaO2, ", tHb = ", tHb)
 
         # Calculate sampling Rate
+        len_X1 = len(X1[:, 5])
+        tint = [None] * len_X1  # list for int values for timestamps
         sdps = []  # list for number of data points for each second
-        for i == len(X1):
-            sdps[i] = X1[i, 6]
-            sdps[i] = X1.groupby(['Timestamp'])[['name']].count()
-            print("sdps = ", sdps[i])
+
+        for i in range(len_X1):
+            tint[i] = int(X1[i, 6])
+
+        tot = Counter(tint)  # Gives totals of data points for each second
+
+        # finds least common time counter to delete last second from averages
+        lcn = tot.most_common()[:-1-1:-1]
+        print("lcn = ", lcn)
+
+        llcn = (lcn[0])
+        # print(llcn[0])
+        del tot[llcn[0]]
+        print(tot)
+
+        mean = statistics.mean(tot.values())
+        print("mean = ", mean)
 
         fs = 300  # sampling rate
+        fs = round(mean)  # sampling rate
+        print("sampling rate = ", fs)
         tbl = [10, 60]  # reliable baseline data
 
         # red and ir channels (raw)
