@@ -254,7 +254,7 @@ class SerialPlotting:
         """
         Plots the data after it has been collected for verification
         """
-        fig3, (ax1, ax2) = plt.subplots(nrows=2)
+        fig3, (ax1, ax2) = plt.subplots(nrows=2, constrained_layout=True)
 
         ax1.plot(self.xs[5:-1], self.y6s[5:-1], label="IR Ambient")
         ax2.plot(self.xs[5:-1], self.y5s[5:-1],
@@ -322,7 +322,7 @@ class SerialPlotting:
         Creates widget to bring in user input for Patient and Injection ID
         """
         # sets the size of the GUI & prevents user from being able to resize
-        self.root.geometry("450x245")
+        self.root.geometry("460x245")
         self.root.resizable(False, False)
 
         frame = ttk.Frame(self.root)
@@ -330,11 +330,11 @@ class SerialPlotting:
 
         self.my_entry = tk.Entry(IDframe, width=25)
         self.my_entry.insert(0, 'Patient ID (eg. DH-xxx)')
-        self.my_entry.grid(row=1, column=0, padx=5, pady=5)
+        self.my_entry.grid(row=1, column=0, padx=10, pady=5)
 
         self.my_entry2 = tk.Entry(IDframe, width=25)
         self.my_entry2.insert(0, 'Injection ID (eg. ICG-xx)')
-        self.my_entry2.grid(row=2, column=0, padx=5, pady=5)
+        self.my_entry2.grid(row=2, column=0, padx=10, pady=5)
         submitbutton = tk.Button(IDframe, text="Submit", command=self.retrieve)
         submitbutton.grid(row=1, column=1, rowspan=2)
 
@@ -352,14 +352,14 @@ class SerialPlotting:
         self.SaO2_label.config(wraplength=80)
 
         self.SaO2_ent = ttk.Entry(SaHbframe, width=10)
-        self.SaO2_ent.grid(row=1, column=1, padx=5, pady=5)
+        self.SaO2_ent.grid(row=1, column=1, padx=10, pady=5)
 
         self.HbO2_label = ttk.Label(SaHbframe, text='HbO2 (g/dL):')
         self.HbO2_label.grid(row=2, column=0, padx=5)
         self.HbO2_label.config(wraplength=75)
 
         self.HbO2_ent = ttk.Entry(SaHbframe, width=10)
-        self.HbO2_ent.grid(row=2, column=1, padx=5, pady=5)
+        self.HbO2_ent.grid(row=2, column=1, padx=10, pady=5)
 
     def Notes(self, IDframe):
         self.text = tk.Text(IDframe, width=30, height=2)
@@ -520,7 +520,7 @@ class SerialPlotting:
         blankspace.grid(row=2, column=0)
 
         SaHbframe = tk.Frame(comframe, background='Slategray3')
-        SaHbframe.grid(row=4, column=0, padx=5)
+        SaHbframe.grid(row=4, column=0, padx=10)
 
         # Creates the Patient ID and Injection ID Entry Frame
         IDframe = tk.Frame(selframe, background='Slategray3')
@@ -568,7 +568,7 @@ class SerialPlotting:
 
         # Creates a progress bar
         self.progressbar = ttk.Progressbar(self.root, orient='horizontal',
-                                           length=200)
+                                           length=400)
 
         # Adds start, stop buttons, and progressbar to the frame
         self.preview_button.grid(row=0, column=0)
