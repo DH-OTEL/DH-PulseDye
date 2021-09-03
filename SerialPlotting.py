@@ -1,3 +1,4 @@
+from tkinter.constants import FLAT, GROOVE, RAISED, RIDGE, SOLID, SUNKEN
 import matplotlib.pyplot as plt
 import csv
 from datetime import datetime
@@ -322,7 +323,7 @@ class SerialPlotting:
         Creates widget to bring in user input for Patient and Injection ID
         """
         # sets the size of the GUI & prevents user from being able to resize
-        self.root.geometry("450x245")
+        self.root.geometry("400x255")
         self.root.resizable(False, False)
 
         frame = ttk.Frame(self.root)
@@ -363,7 +364,7 @@ class SerialPlotting:
 
     def Notes(self, IDframe):
         self.text = tk.Text(IDframe, width=30, height=2)
-        self.text.grid(row=3, columnspan=2)
+        self.text.grid(row=3, columnspan=2, padx=5)
         self.text.config(wrap='word', font=('Arial', 10))
         self.notedialouge = 'Enter any relevant notes prior to pressing \'Stop\''
         self.text.insert('1.0', self.notedialouge)
@@ -505,12 +506,17 @@ class SerialPlotting:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
 
         # Creates a Frame for Selections
-        selframe = tk.Frame(self.root, background='Slategray3')
+        # selframe = tk.Frame(self.root, background='Slategray3')
+        selframe = ttk.Frame(self.root)
         selframe.grid(row=0, column=0)
+        # selframe.config(relief=GROOVE, padding=(5, 5))
 
         # Creates COM Port Selection Frame with embedded SaHb frame
-        comframe = tk.Frame(selframe, background='Slategray3')
-        comframe.grid(row=0, column=0, padx=10)
+        # comframe = tk.Frame(selframe, background='Slategray3')
+        comframe = ttk.Frame(selframe)
+        comframe.grid(row=0, column=0)
+        comframe.config(relief=GROOVE, padding=(4, 5)
+                        )
         commsg = ttk.Label(comframe, text='Select correct COM Port:',
                            font=('Arial', 10, 'bold'))
         commsg.grid(row=0, column=0)
@@ -519,16 +525,20 @@ class SerialPlotting:
         blankspace = ttk.Label(comframe, text=' ', )
         blankspace.grid(row=2, column=0)
 
-        SaHbframe = tk.Frame(comframe, background='Slategray3')
-        SaHbframe.grid(row=4, column=0, padx=5)
+        # SaHbframe = tk.Frame(comframe, background='Slategray3')
+        SaHbframe = ttk.Frame(comframe)
+        SaHbframe.grid(row=4, column=0)
+        # SaHbframe.config(relief=GROOVE)
 
         # Creates the Patient ID and Injection ID Entry Frame
-        IDframe = tk.Frame(selframe, background='Slategray3')
-        IDframe.grid(row=0, column=2, pady=5)
+        # IDframe = tk.Frame(selframe, background='Slategray3')
+        IDframe = ttk.Frame(selframe)
+        IDframe.grid(row=0, column=2)
+        IDframe.config(relief=GROOVE, padding=(4, 13))
         IDmsg = ttk.Label(
-            IDframe, text="""Enter Patient & Injection ID
-        then click \'submit\'""", font=('Arial', 10, 'bold'))
-        IDmsg.grid(row=0, column=0)
+            IDframe, text="""Enter Patient & Injection ID, then 
+            click \'submit\'""", font=('Arial', 10, 'bold'))
+        IDmsg.grid(row=0, column=0, columnspan=2)
 
         # Places widgets into the the GUI
         self.SaHb_input(SaHbframe)
@@ -538,6 +548,7 @@ class SerialPlotting:
         # Creates frame for preview, start and stop buttons in GUI
         frame = ttk.Frame(self.root)
         frame.grid(row=3, column=0, rowspan=3)
+        frame.config(relief=RAISED, padding=(1, 1))
 
         # Creates a Preview Button for Previewing the Data
         self.preview_button = tk.Button(frame, text="Preview", fg="white",
@@ -568,7 +579,7 @@ class SerialPlotting:
 
         # Creates a progress bar
         self.progressbar = ttk.Progressbar(self.root, orient='horizontal',
-                                           length=200)
+                                           length=400)
 
         # Adds start, stop buttons, and progressbar to the frame
         self.preview_button.grid(row=0, column=0)
@@ -577,6 +588,11 @@ class SerialPlotting:
         self.ICG_button.grid(row=0, column=3)
         self.progressbar.grid(row=6, column=0)
         self.progressbar.config(mode='indeterminate')
+
+        # Changes widget style
+        style = ttk.Style()
+        style.theme_use('vista')
+        style.configure('TFrame', background='Slategray3')
 
         self.root.mainloop()
 
