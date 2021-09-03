@@ -149,7 +149,9 @@ class TI_to_AIF:
                 # time.sleep(1)
 
                 # Resize Tkinter window
-                self.gui_vars.root.geometry("450x245")
+                self.msg = ttk.Label(self.gui_vars.root, text='  ')
+                self.msg.grid(row=8)
+                self.gui_vars.root.geometry("450x255")
                 print("x0 = ", self.x0)
                 self.gui_vars.fig.clf()
 
@@ -162,9 +164,10 @@ class TI_to_AIF:
         # Plot data and embed plot in GUI
         ax = self.gui_vars.fig.add_subplot()
         ax.plot(bpm.T, P[0, :], bpm.T, P[1, :])
-        ax.set_title("select center of the heart-rate peak")
+        ax.set_title("Select center of the heart-rate peak")
         ax.set_xlim(12, 180)
         ax.set_xlabel("frequency (beats per min).")
+        self.gui_vars.fig.subplots_adjust(left=.12)
 
         # tracks clicks in figure
         cid = self.gui_vars.fig.canvas.mpl_connect(
@@ -173,7 +176,7 @@ class TI_to_AIF:
         self.gui_vars.canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3)
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3, padx=10)
         self.gui_vars.root.geometry("525x675")
 
         self.gui_vars.root.mainloop()
@@ -199,8 +202,6 @@ class TI_to_AIF:
         ghr = self.x0
         fhr = ghr / 60
 
-        # print("TESTPOINT1")
-
         # Demodulate signal and compute the flux ratio and concentration.
         # get carrier signal from envelope (could also apply a bandpass filter)
         if self.filt_method == 'simple':
@@ -220,16 +221,15 @@ class TI_to_AIF:
             A_SB2_inp = 60
             A_SB2 = 10. ** (-A_SB2_inp / 20.)
 
-            # print("TESTPOINT2")
             # Generate remez filter parameters with remezord
             (N_upenn, F_upenn, A_upenn, W_upenn) = \
                 remezord([fl - 0.2, fl, fh, fh + 0.2], [1, 0, 1],
                          [A_SB, A_PB, A_SB2], Hz=fs)
-            # print("TESTPOINT6")
+
             # Generate taps using remez
             taps = signal.remez(N_upenn, F_upenn*fs, [0, 1, 0], weight=W_upenn,
                                 fs=fs)
-            # print("TESTPOINT7")
+
             # Filter Red and IR signals
             fRED = signal.lfilter(taps, 1, -np.log(RED))
             fIR = signal.lfilter(taps, 1, -np.log(IR))
@@ -252,7 +252,7 @@ class TI_to_AIF:
             minir[0, k] = locsir_sublist.min()
             loctmp = np.where(locsir_sublist == minir[0, k])[0][0]
             locsirmin[0, k] = locsir[k] + loctmp - 1
-        # print("TESTPOINT8")
+
         # interpolate red from IR peaks and troughs. uses scipy's interpolate
         # library
         f_interp = interpolate.interp1d(tmpt, fRED)
@@ -271,22 +271,22 @@ class TI_to_AIF:
         # amplitude
         Ared = 0.5 * (pksred[:] - minred[:])
         Air = 0.5 * (pksir[:] - minir[:])
-        # print("TESTPOINT8")
+
         eHbO2red, eHbred, _, eicg = getextinctioncoef(
             self.gui_vars, np.array([self.wv[0]]))
         eHbO2ir, eHbir, _, _ = getextinctioncoef(
             self.gui_vars, np.array([self.wv[1]]))
-        # print("TESTPOINT9")
+
         eHbO2red = eHbO2red[0]
         eHbred = eHbred[0]
         eicg = eicg[0]
         eHbO2ir = eHbO2ir[0]
         eHbir = eHbir[0]
-        # print("TESTPOINT10")
+
         # Flux of light. Corrects for div/0 errors in Air and Ared
         # phi = Air / Ared
         phi = np.array([])
-        # print("TESTPOINT11")
+
         for i in range(len(Air.T)):
             try:
                 phi = np.append(phi, Air[:, i][0] / Ared[i])
@@ -294,41 +294,36 @@ class TI_to_AIF:
                 phi = np.append(phi, 0)
             except RuntimeError:
                 phi = np.append(phi, 0)
-        # print("TESTPOINT12")
+
         I = np.logical_and(tir > tbl[0], tir < tbl[1])
         # choose a baseline Phi for d calculation.
         phi0 = np.mean(phi[I.reshape((len(I.T),))])
-        # print("TESTPOINT13")
+
         # distance of expansion, which is converted to concentration.
         d = phi0 * (eHbO2ir * SaO2 + eHbir * (1 - SaO2)) / (eHbO2red * SaO2 +
                                                             eHbred * (1 - SaO2))
-        # print("TESTPOINT14")
+
         # find a d value to bring Ci to zero.
         Ci = (phi / d * (eHbO2ir * SaO2 + eHbir * (1 - SaO2)) - eHbO2red * SaO2 -
               eHbred * (1 - SaO2)) * tHb / eicg
 
-        # print("TESTPOINT15")
         # iterpolate t and ca to the current temporal resolution of the SPY Elite,
         # which is fast enough preserve any features. sgolay filtering 51 x 3.
         t = np.linspace(tir[0, 0], tir[0, -1],
                         num=int(np.round(tir[0, -1] / 0.267)))
 
-        # print("TESTPOINT16")
         cainterp = interpolate.PchipInterpolator(tir[0, :], Ci)
         ci_interp = cainterp(t)
-        # print("TESTPOINT17")
 
         # interpolation to correct for nonlinearly spaced time points
         interp_ci = interpolate.interp1d(t, ci_interp)
-        # print("TESTPOINT18")
+
         ci_result = interp_ci(np.linspace(t[0], t[-1], num=len(t)))
         # print("ci_result = ", ci_result)
-        # print("TESTPOINT19")
+
         Ca = savgol_filter(ci_result, 51, 3)
 
-        # print("TESTPOINT20")
         self.embedAIFplot(t, Ca)
-        # print("TESTPOINT21")
 
         if self.savedata == 1:
             xout = np.hstack(
@@ -383,7 +378,7 @@ class TI_to_AIF:
                     self.msg.grid(row=8)
 
                     # Make GUI smaller
-                    self.gui_vars.root.geometry("450x245")
+                    self.gui_vars.root.geometry("450x255")
 
                     # Save data
                     s = AIF_Saving(self.x1, self.gui_vars)
@@ -402,6 +397,7 @@ class TI_to_AIF:
         ax.set_ylabel('Concentration (uM)')
         ax.set_title(
             'Select the left and right bounds for the data to be saved')
+        self.gui_vars.fig.subplots_adjust(left=.15)
 
         # Make plot respond to mouseclicks
         cid = self.gui_vars.fig.canvas.mpl_connect(
@@ -411,7 +407,7 @@ class TI_to_AIF:
         # placing the canvas on the Tkinter window
         self.msg = ttk.Label(self.gui_vars.root, text='  ')
         self.msg.grid(row=8)
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2)
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2, padx=10)
         self.gui_vars.root.geometry("525x675")
 
         self.gui_vars.root.mainloop()
