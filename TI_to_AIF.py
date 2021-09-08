@@ -176,8 +176,8 @@ class TI_to_AIF:
         self.gui_vars.canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3, padx=10)
         self.gui_vars.root.geometry("525x715")
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3, padx=10)
 
         self.gui_vars.root.mainloop()
 
@@ -407,8 +407,8 @@ class TI_to_AIF:
         # placing the canvas on the Tkinter window
         self.msg = ttk.Label(self.gui_vars.root, text='  ')
         self.msg.grid(row=8)
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2, padx=10)
         self.gui_vars.root.geometry("525x715")
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2, padx=10)
 
         self.gui_vars.root.mainloop()
 
