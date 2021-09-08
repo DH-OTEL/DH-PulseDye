@@ -151,7 +151,7 @@ class TI_to_AIF:
                 # Resize Tkinter window
                 self.msg = ttk.Label(self.gui_vars.root, text='  ')
                 self.msg.grid(row=8)
-                self.gui_vars.root.geometry("450x255")
+                self.gui_vars.root.geometry("460x285")
                 print("x0 = ", self.x0)
                 self.gui_vars.fig.clf()
 
@@ -177,7 +177,7 @@ class TI_to_AIF:
 
         # placing the canvas on the Tkinter window
         self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3, padx=10)
-        self.gui_vars.root.geometry("525x675")
+        self.gui_vars.root.geometry("525x705")
 
         self.gui_vars.root.mainloop()
 
@@ -378,7 +378,7 @@ class TI_to_AIF:
                     self.msg.grid(row=8)
 
                     # Make GUI smaller
-                    self.gui_vars.root.geometry("450x255")
+                    self.gui_vars.root.geometry("460x285")
 
                     # Save data
                     s = AIF_Saving(self.x1, self.gui_vars)
@@ -408,7 +408,7 @@ class TI_to_AIF:
         self.msg = ttk.Label(self.gui_vars.root, text='  ')
         self.msg.grid(row=8)
         self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2, padx=10)
-        self.gui_vars.root.geometry("525x675")
+        self.gui_vars.root.geometry("525x705")
 
         self.gui_vars.root.mainloop()
 
