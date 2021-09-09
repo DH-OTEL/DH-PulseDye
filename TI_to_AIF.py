@@ -151,7 +151,7 @@ class TI_to_AIF:
                 # Resize Tkinter window
                 self.msg = ttk.Label(self.gui_vars.root, text='  ')
                 self.msg.grid(row=8)
-                # self.gui_vars.root.geometry("470x245")
+                self.gui_vars.root.geometry("460x285")
                 print("x0 = ", self.x0)
                 self.gui_vars.fig.clf()
 
@@ -164,15 +164,10 @@ class TI_to_AIF:
         # Plot data and embed plot in GUI
         ax = self.gui_vars.fig.add_subplot()
         ax.plot(bpm.T, P[0, :], bpm.T, P[1, :])
-        ax.set_title("select center of the heart-rate peak")
+        ax.set_title("Select center of the heart-rate peak")
         ax.set_xlim(12, 180)
         ax.set_xlabel("frequency (beats per min).")
-        # ax.set_ylabel("Intensity")
-
-        # plt.rcParams['figure.constrained_layout.use'] = True
-        # ax.set_position([.2, .1, 1.5, 1])
         self.gui_vars.fig.subplots_adjust(left=.12)
-        # ax.subplots_adjust(left=1.5)
 
         # tracks clicks in figure
         cid = self.gui_vars.fig.canvas.mpl_connect(
@@ -181,8 +176,8 @@ class TI_to_AIF:
         self.gui_vars.canvas.draw()
 
         # placing the canvas on the Tkinter window
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=4, padx=10)
-        self.gui_vars.root.geometry("525x675")
+        self.gui_vars.root.geometry("525x715")
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=3, padx=10)
 
         self.gui_vars.root.mainloop()
 
@@ -383,7 +378,7 @@ class TI_to_AIF:
                     self.msg.grid(row=8)
 
                     # Make GUI smaller
-                    self.gui_vars.root.geometry("470x245")
+                    self.gui_vars.root.geometry("460x285")
 
                     # Save data
                     s = AIF_Saving(self.x1, self.gui_vars)
@@ -400,9 +395,8 @@ class TI_to_AIF:
         ax.set_xlabel('time (sec)')
         ax.set_ylabel('Concentration (uM)')
         ax.set_title(
-            'Select the left and right bounds for data to be saved')
-        # plt.rcParams['figure.constrained_layout.use'] = True
-        self.gui_vars.fig.subplots_adjust(left=.17)
+            'Select the left and right bounds for the data to be saved')
+        self.gui_vars.fig.subplots_adjust(left=.15)
 
         # Make plot respond to mouseclicks
         cid = self.gui_vars.fig.canvas.mpl_connect(
@@ -412,8 +406,8 @@ class TI_to_AIF:
         # placing the canvas on the Tkinter window
         self.msg = ttk.Label(self.gui_vars.root, text='  ')
         self.msg.grid(row=8)
-        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2)
-        # self.gui_vars.root.geometry("525x675")
+        self.gui_vars.root.geometry("525x715")
+        self.gui_vars.canvas.get_tk_widget().grid(row=9, columnspan=2, padx=10)
 
         self.gui_vars.root.mainloop()
 

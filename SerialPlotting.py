@@ -1,8 +1,9 @@
+from tkinter.constants import FLAT, GROOVE, RAISED, RIDGE, SOLID, SUNKEN
 import matplotlib.pyplot as plt
 import csv
 from datetime import datetime
 import tkinter as tk
-from tkinter import ttk
+from tkinter import PhotoImage, ttk
 from PIL import Image, ImageTk
 import serial
 from matplotlib.figure import Figure
@@ -60,7 +61,7 @@ class SerialPlotting:
         Creates combo box selection of com port
         """
         self.COMt = tk.StringVar()
-        combobox = ttk.Combobox(comframe, textvariable=self.COMt)
+        combobox = ttk.Combobox(comframe, textvariable=self.COMt, width=16)
         combobox.grid(row=1, column=0)
         combobox.config(values=('COM1', 'COM2', 'COM3', 'COM4',
                         'COM5', 'COM6', 'COM7', 'COM8', 'COM9', 'COM10'))
@@ -322,7 +323,7 @@ class SerialPlotting:
         Creates widget to bring in user input for Patient and Injection ID
         """
         # sets the size of the GUI & prevents user from being able to resize
-        self.root.geometry("460x245")
+        self.root.geometry("400x285")
         self.root.resizable(False, False)
 
         frame = ttk.Frame(self.root)
@@ -330,21 +331,23 @@ class SerialPlotting:
 
         self.my_entry = tk.Entry(IDframe, width=25)
         self.my_entry.insert(0, 'Patient ID (eg. DH-xxx)')
-        self.my_entry.grid(row=1, column=0, padx=10, pady=5)
+
+        self.my_entry.grid(row=2, column=0, padx=5, pady=5)
 
         self.my_entry2 = tk.Entry(IDframe, width=25)
         self.my_entry2.insert(0, 'Injection ID (eg. ICG-xx)')
-        self.my_entry2.grid(row=2, column=0, padx=10, pady=5)
+        self.my_entry2.grid(row=3, column=0, padx=5, pady=5)
+
         submitbutton = tk.Button(IDframe, text="Submit", command=self.retrieve)
-        submitbutton.grid(row=1, column=1, rowspan=2)
+        submitbutton.grid(row=2, column=1, rowspan=2)
 
     def SaHb_input(self, SaHbframe):
         """
         User entry for SaO2 and HbO2
         """
-        SaHblabel = ttk.Label(SaHbframe, text='Enter SaO2 & HbO2:',
+        SaHblabel = ttk.Label(SaHbframe, text='SaO2 & HbO2 Values:',
                               font=('Arial', 10, 'bold'))
-        SaHblabel.grid(row=0, column=0, columnspan=2)
+        SaHblabel.grid(row=0, column=0, columnspan=2, sticky='sw')
 
         self.SaO2_label = ttk.Label(
             SaHbframe, text='SaO2 (decimal value):')
@@ -362,9 +365,12 @@ class SerialPlotting:
         self.HbO2_ent.grid(row=2, column=1, padx=10, pady=5)
 
     def Notes(self, IDframe):
+        self.space = ttk.Label(IDframe, text='Notes:', font=(
+            'Arial', 10, 'bold'))
+        self.space.grid(row=4, columnspan=2, sticky='sw')
         self.text = tk.Text(IDframe, width=30, height=2)
-        self.text.grid(row=3, columnspan=2)
-        self.text.config(wrap='word', font=('Arial', 10))
+        self.text.grid(row=5, columnspan=2, padx=5)
+        self.text.config(wrap='word', font=('Arial', 9))
         self.notedialouge = 'Enter any relevant notes prior to pressing \'Stop\''
         self.text.insert('1.0', self.notedialouge)
 
@@ -374,7 +380,7 @@ class SerialPlotting:
     def show_message(self, txt):
         # shows a message in the GUI
         self.msg = ttk.Label(self.root, text=txt)
-        self.msg.grid(row=7, column=0)
+        self.msg.grid(row=7, column=0, sticky='w', padx=20)
 
     def new_message(self, txt):
         # Reconfigures message from GUI to allow new message
@@ -505,30 +511,43 @@ class SerialPlotting:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
 
         # Creates a Frame for Selections
-        selframe = tk.Frame(self.root, background='Slategray3')
+        # selframe = tk.Frame(self.root, background='Slategray3')
+        selframe = ttk.Frame(self.root)
         selframe.grid(row=0, column=0)
+        # selframe.config(relief=GROOVE, padding=(5, 5))
 
         # Creates COM Port Selection Frame with embedded SaHb frame
-        comframe = tk.Frame(selframe, background='Slategray3')
-        comframe.grid(row=0, column=0, padx=10)
-        commsg = ttk.Label(comframe, text='Select correct COM Port:',
+        # comframe = tk.Frame(selframe, background='Slategray3')
+        comframe = ttk.Frame(selframe)
+        comframe.grid(row=0, column=0)
+        comframe.config(relief=GROOVE, padding=(4, 6)
+                        )
+        commsg = ttk.Label(comframe, text='COM Port Selection:',
                            font=('Arial', 10, 'bold'))
-        commsg.grid(row=0, column=0)
+        commsg.grid(row=0, column=0, sticky='sw')
         self.ComSelect(comframe)
 
-        blankspace = ttk.Label(comframe, text=' ', )
+        blankspace = ttk.Label(comframe, text=' ', font=('Arial', 14, 'bold'))
+        # blankspace2 = ttk.Label(comframe, text=' ', font=('Arial', 6))
         blankspace.grid(row=2, column=0)
+        # blankspace2.grid(row=3)
 
-        SaHbframe = tk.Frame(comframe, background='Slategray3')
-        SaHbframe.grid(row=4, column=0, padx=10)
+        # SaHbframe = tk.Frame(comframe, background='Slategray3')
+        SaHbframe = ttk.Frame(comframe)
+        SaHbframe.grid(row=4, column=0)
+        # SaHbframe.config(relief=GROOVE)
 
         # Creates the Patient ID and Injection ID Entry Frame
-        IDframe = tk.Frame(selframe, background='Slategray3')
-        IDframe.grid(row=0, column=2, pady=5)
+        # IDframe = tk.Frame(selframe, background='Slategray3')
+        IDframe = ttk.Frame(selframe)
+        IDframe.grid(row=0, column=2)
+        IDframe.config(relief=GROOVE, padding=(4, 8))
+        IDtitle = ttk.Label(
+            IDframe, text="""Patient & Injection ID:""", font=('Arial', 10, 'bold'))
         IDmsg = ttk.Label(
-            IDframe, text="""Enter Patient & Injection ID
-        then click \'submit\'""", font=('Arial', 10, 'bold'))
-        IDmsg.grid(row=0, column=0)
+            IDframe, text="""Be sure to click \'submit\' after entering IDs!""", font=('Arial', 7))
+        IDtitle.grid(row=0, column=0, columnspan=2, sticky='sw')
+        IDmsg.grid(row=1, column=0, columnspan=2, sticky='sw')
 
         # Places widgets into the the GUI
         self.SaHb_input(SaHbframe)
@@ -538,6 +557,7 @@ class SerialPlotting:
         # Creates frame for preview, start and stop buttons in GUI
         frame = ttk.Frame(self.root)
         frame.grid(row=3, column=0, rowspan=3)
+        frame.config(relief=RAISED, padding=(1, 1))
 
         # Creates a Preview Button for Previewing the Data
         self.preview_button = tk.Button(frame, text="Preview", fg="white",
@@ -577,6 +597,20 @@ class SerialPlotting:
         self.ICG_button.grid(row=0, column=3)
         self.progressbar.grid(row=6, column=0)
         self.progressbar.config(mode='indeterminate')
+
+        # Changes widget style
+        style = ttk.Style()
+        style.theme_use('vista')
+        style.configure('TFrame', background='Slategray3')
+
+        # Adds OTEL logo to GUI
+        label = ttk.Label(self.root)
+        label.grid(row=7, column=0, sticky='se')
+        ologo = PhotoImage(file='Icons/otel_logo_denim.gif')
+        ologo = ologo.subsample(10)
+        label.config(image=ologo)
+
+        # self.msg.grid(row=7, column=0)
 
         self.root.mainloop()
 
