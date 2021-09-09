@@ -332,11 +332,11 @@ class SerialPlotting:
         self.my_entry = tk.Entry(IDframe, width=25)
         self.my_entry.insert(0, 'Patient ID (eg. DH-xxx)')
 
-        self.my_entry.grid(row=2, column=0, padx=10, pady=5)
+        self.my_entry.grid(row=2, column=0, padx=5, pady=5)
 
         self.my_entry2 = tk.Entry(IDframe, width=25)
         self.my_entry2.insert(0, 'Injection ID (eg. ICG-xx)')
-        self.my_entry2.grid(row=3, column=0, padx=10, pady=5)
+        self.my_entry2.grid(row=3, column=0, padx=5, pady=5)
 
         submitbutton = tk.Button(IDframe, text="Submit", command=self.retrieve)
         submitbutton.grid(row=2, column=1, rowspan=2)
