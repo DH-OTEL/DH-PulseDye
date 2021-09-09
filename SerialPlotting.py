@@ -255,7 +255,7 @@ class SerialPlotting:
         """
         Plots the data after it has been collected for verification
         """
-        fig3, (ax1, ax2) = plt.subplots(nrows=2, constrained_layout=True)
+        fig3, (ax1, ax2) = plt.subplots(nrows=2)
 
         ax1.plot(self.xs[5:-1], self.y6s[5:-1], label="IR Ambient")
         ax2.plot(self.xs[5:-1], self.y5s[5:-1],
@@ -332,11 +332,11 @@ class SerialPlotting:
         self.my_entry = tk.Entry(IDframe, width=25)
         self.my_entry.insert(0, 'Patient ID (eg. DH-xxx)')
 
-        self.my_entry.grid(row=2, column=0, padx=5, pady=5)
+        self.my_entry.grid(row=2, column=0, padx=10, pady=5)
 
         self.my_entry2 = tk.Entry(IDframe, width=25)
         self.my_entry2.insert(0, 'Injection ID (eg. ICG-xx)')
-        self.my_entry2.grid(row=3, column=0, padx=5, pady=5)
+        self.my_entry2.grid(row=3, column=0, padx=10, pady=5)
 
         submitbutton = tk.Button(IDframe, text="Submit", command=self.retrieve)
         submitbutton.grid(row=2, column=1, rowspan=2)
@@ -355,14 +355,14 @@ class SerialPlotting:
         self.SaO2_label.config(wraplength=80)
 
         self.SaO2_ent = ttk.Entry(SaHbframe, width=10)
-        self.SaO2_ent.grid(row=1, column=1, padx=10, pady=5)
+        self.SaO2_ent.grid(row=1, column=1, padx=5, pady=5)
 
         self.HbO2_label = ttk.Label(SaHbframe, text='HbO2 (g/dL):')
         self.HbO2_label.grid(row=2, column=0, padx=5)
         self.HbO2_label.config(wraplength=75)
 
         self.HbO2_ent = ttk.Entry(SaHbframe, width=10)
-        self.HbO2_ent.grid(row=2, column=1, padx=10, pady=5)
+        self.HbO2_ent.grid(row=2, column=1, padx=5, pady=5)
 
     def Notes(self, IDframe):
         self.space = ttk.Label(IDframe, text='Notes:', font=(
